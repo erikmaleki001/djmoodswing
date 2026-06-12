@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DJ Moodswing — Vinyl Hip Hop & Beyond</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & BASE ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:    #ff2d78;
+      --purple:  #7b2fff;
+      --cyan:    #00e5ff;
+      --yellow:  #ffe600;
+      --bg:      #0a0a0f;
+      --surface: #13121a;
+      --text:    #f0eeff;
+      --muted:   #8a85a8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 2.5rem;
+      background: rgba(10,10,15,0.75);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(123,47,255,0.25);
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-weight: 600;
+      font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-social { display: flex; gap: 0.75rem; align-items: center; }
+    .nav-social-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      color: var(--muted); text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .nav-social-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .nav-social-btn:hover {
+      border-color: var(--pink); color: var(--pink);
+      box-shadow: 0 0 12px rgba(255,45,120,0.3);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(255,45,120,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at 80% 70%, rgba(123,47,255,0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 50% 90%, rgba(0,229,255,0.2) 0%, transparent 60%);
+    }
+
+    /* animated record */
+    .record {
+      position: absolute; right: -80px; top: 50%; transform: translateY(-50%);
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, #1a1a1a 0%, #1a1a1a 18%, transparent 18.5%),
+        repeating-radial-gradient(circle at center, #111 0px, #222 2px, #111 4px);
+      opacity: 0.35;
+      animation: spin 18s linear infinite;
+    }
+    @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+    .record::after {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        rgba(255,45,120,0.12) 0deg,
+        rgba(123,47,255,0.12) 120deg,
+        rgba(0,229,255,0.12) 240deg,
+        rgba(255,45,120,0.12) 360deg
+      );
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+
+    .hero-eyebrow {
+      font-size: 0.85rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: clamp(4rem, 12vw, 9rem);
+      line-height: 0.9;
+      background: linear-gradient(135deg, #fff 0%, var(--pink) 40%, var(--purple) 70%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-sub strong { color: var(--yellow); font-weight: 700; }
+
+    .hero-tags {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      justify-content: center; margin-bottom: 2.5rem;
+    }
+
+    .tag {
+      padding: 0.35rem 1rem; border-radius: 999px; font-size: 0.8rem;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      border: 1.5px solid;
+    }
+    .tag-pink   { border-color: var(--pink);   color: var(--pink);   }
+    .tag-purple { border-color: var(--purple); color: var(--purple); }
+    .tag-cyan   { border-color: var(--cyan);   color: var(--cyan);   }
+    .tag-yellow { border-color: var(--yellow); color: var(--yellow); }
+
+    .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.85rem 2rem; border-radius: 6px;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+      font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.08em;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+      box-shadow: 0 0 25px rgba(255,45,120,0.45);
+    }
+    .btn-primary:hover { box-shadow: 0 0 40px rgba(255,45,120,0.65); }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0,229,255,0.2);
+    }
+    .btn-outline:hover { box-shadow: 0 0 30px rgba(0,229,255,0.4); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+
+    .section-label {
+      font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--pink); margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .accent-pink   { color: var(--pink); }
+    .accent-cyan   { color: var(--cyan); }
+    .accent-purple { color: var(--purple); }
+    .accent-yellow { color: var(--yellow); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--purple), var(--pink), transparent);
+      margin: 0;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--surface); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+
+    .about-visual {
+      position: relative;
+    }
+
+    .about-photo {
+      width: 100%; border-radius: 16px; overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 60px rgba(255,45,120,0.25), 0 0 30px rgba(123,47,255,0.2);
+      border: 2px solid rgba(255,45,120,0.3);
+    }
+
+    .about-photo img {
+      width: 100%; height: 420px;
+      object-fit: cover; object-position: center 20%;
+      display: block;
+    }
+
+    .about-photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,10,15,0.7) 0%, transparent 50%);
+    }
+
+    .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1rem; font-size: 1.05rem; }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .stat-row { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+    .stat { text-align: left; }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.5rem; line-height: 1;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* ── MUSIC ── */
+    #music {}
+
+    .music-header { margin-bottom: 3rem; }
+
+    .embed-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .embed-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .embed-card:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 30px rgba(0,229,255,0.15);
+    }
+
+    .embed-placeholder {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 5px;
+      background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(123,47,255,0.08));
+      position: relative; overflow: hidden;
+    }
+
+    .embed-placeholder::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 120%, var(--glow, rgba(0,229,255,0.15)) 0%, transparent 70%);
+    }
+
+    /* Equalizer bars */
+    .eq-bar {
+      width: 5px; border-radius: 3px;
+      background: linear-gradient(to top, var(--bar-a, var(--cyan)), var(--bar-b, var(--purple)));
+      animation: eq-bounce var(--dur, 0.8s) ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+    @keyframes eq-bounce {
+      0%   { transform: scaleY(0.15); opacity: 0.5; }
+      100% { transform: scaleY(1);    opacity: 1;   }
+    }
+
+    .embed-info { padding: 1.25rem 1.5rem; }
+    .embed-info h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+    .embed-info p { font-size: 0.85rem; color: var(--muted); }
+
+    .embed-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 0.75rem; color: var(--cyan);
+      font-size: 0.85rem; font-weight: 600; text-decoration: none;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .embed-link:hover { color: #fff; }
+
+    .soundcloud-notice {
+      margin-top: 2rem; padding: 1.25rem 1.5rem;
+      background: rgba(255,230,0,0.06);
+      border: 1px solid rgba(255,230,0,0.25);
+      border-radius: 10px; color: var(--muted); font-size: 0.9rem;
+    }
+    .soundcloud-notice strong { color: var(--yellow); }
+
+    /* ── GALLERY ── */
+    #gallery { background: var(--surface); }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 0.75rem;
+    }
+
+    .gallery-item {
+      border-radius: 10px; overflow: hidden;
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--a, rgba(123,47,255,0.3)), var(--b, rgba(255,45,120,0.3)));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem; position: relative;
+      cursor: pointer; transition: transform 0.2s;
+    }
+    .gallery-item:hover { transform: scale(1.03); z-index: 2; }
+    .gallery-item:nth-child(1) { grid-column: span 2; aspect-ratio: 2/1; }
+    .gallery-item:nth-child(4) { grid-row: span 2; aspect-ratio: unset; }
+
+    .gallery-item img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: rgba(10,10,15,0.6);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+      font-size: 1rem; font-weight: 700; letter-spacing: 0.05em;
+      color: #fff; font-family: 'Space Grotesk', sans-serif;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+    .gallery-cta { margin-top: 2rem; text-align: center; color: var(--muted); font-size: 0.95rem; }
+    .gallery-cta strong { color: var(--text); }
+
+    /* ── BOOKING ── */
+    #booking {}
+
+    .booking-grid {
+      display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start;
+    }
+
+    .booking-info h3 { font-size: 1.4rem; margin-bottom: 0.75rem; }
+    .booking-info p { color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; font-size: 1rem; }
+
+    .booking-types { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .booking-types li {
+      display: flex; align-items: center; gap: 0.75rem;
+      color: var(--muted); font-size: 0.95rem;
+    }
+    .booking-types li::before {
+      content: '▶';
+      color: var(--pink); font-size: 0.6rem; flex-shrink: 0;
+    }
+
+    .booking-form {
+      background: var(--surface);
+      border: 1px solid rgba(123,47,255,0.3);
+      border-radius: 16px; padding: 2.5rem;
+    }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-full { grid-column: 1 / -1; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label {
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--muted); font-weight: 600;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1.5px solid rgba(123,47,255,0.25);
+      border-radius: 8px; padding: 0.75rem 1rem;
+      color: var(--text); font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(123,47,255,0.15);
+    }
+    .form-group select option { background: var(--surface); }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+
+    .form-submit { margin-top: 1.5rem; width: 100%; justify-content: center; font-size: 1rem; padding: 1rem; }
+
+    .form-note { margin-top: 1rem; text-align: center; font-size: 0.8rem; color: var(--muted); }
+
+    /* ── SUCCESS MESSAGE ── */
+    .form-success {
+      display: none; text-align: center; padding: 2rem;
+    }
+    .form-success .check { font-size: 3.5rem; margin-bottom: 1rem; }
+    .form-success h3 { color: var(--cyan); margin-bottom: 0.5rem; }
+    .form-success p { color: var(--muted); font-size: 0.95rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid rgba(123,47,255,0.2);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      background: linear-gradient(90deg, var(--pink), var(--purple), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      display: block; margin-bottom: 0.75rem;
+    }
+
+    footer p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .social-row { display: flex; gap: 1rem; justify-content: center; margin: 1.5rem 0; }
+    .social-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 46px; height: 46px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      color: var(--muted); text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .social-btn svg { width: 20px; height: 20px; fill: currentColor; }
+    .social-btn:hover {
+      border-color: var(--pink); color: var(--pink);
+      box-shadow: 0 0 15px rgba(255,45,120,0.3);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s, transform 0.6s; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      .nav-links a { font-size: 0.78rem; }
+      .record { display: none; }
+      .about-grid, .booking-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:nth-child(1) { grid-column: span 2; }
+      .gallery-item:nth-child(4) { grid-row: auto; aspect-ratio: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <span class="logo">DJ MOODSWING</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#music">Music</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#booking">Book</a></li>
+    </ul>
+    <div class="nav-social">
+      <a class="nav-social-btn" href="https://www.instagram.com/djmoodswing/" target="_blank" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a class="nav-social-btn" href="https://www.facebook.com/mstrain2" target="_blank" title="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="record"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">@djmoodswing · Michael Strain is</p>
+      <h1 class="hero-title">DJ<br>MOODSWING</h1>
+      <p class="hero-sub">
+        Spinning <strong>vinyl</strong> since day one. Hip hop, disco, jazz, country —
+        if it's got a groove, it's in the crates.
+      </p>
+      <div class="hero-tags">
+        <span class="tag tag-pink">Hip Hop</span>
+        <span class="tag tag-purple">Disco</span>
+        <span class="tag tag-cyan">Jazz</span>
+        <span class="tag tag-yellow">Country</span>
+        <span class="tag tag-pink">Funk</span>
+        <span class="tag tag-purple">R&amp;B</span>
+        <span class="tag tag-cyan">Soul</span>
+      </div>
+      <div class="cta-row">
+        <a href="#booking" class="btn btn-primary">Book DJ Moodswing</a>
+        <a href="#music" class="btn btn-outline">Hear the Mixes</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-photo">
+            <img src="images/djmoddswing_profile_pic.jpg" alt="DJ Moodswing at the Pioneer turntables" />
+            <div class="about-photo-overlay"></div>
+          </div>
+          <div class="stat-row" style="margin-top:1.5rem;">
+            <div class="stat">
+              <div class="stat-num">10+</div>
+              <div class="stat-label">Years Spinning</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">500+</div>
+              <div class="stat-label">Events Played</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Vinyl</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <p class="section-label">About</p>
+          <h2 class="section-title">The <span class="accent-pink">Man</span> Behind<br>the <span class="accent-cyan">Crates</span></h2>
+          <p>
+            Michael Strain — aka <strong>DJ Moodswing</strong> — is a vinyl purist with an
+            omnivorous ear. Born from a love of hip hop and raised on a diet of soul, disco,
+            jazz, and everything in between, Moodswing has built a reputation for reading the
+            room and taking it somewhere unexpected.
+          </p>
+          <p>
+            Every set is curated from his ever-growing collection of wax. No playlists,
+            no algorithms — just two turntables, a mixer, and decades of crate-digging
+            paying off in real time.
+          </p>
+          <p>
+            Whether it's a house party, a rooftop, a wedding, or a club night, DJ Moodswing
+            brings energy, knowledge, and the kind of musical versatility that keeps every
+            crowd on their feet — and coming back for more.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- MUSIC -->
+  <section id="music">
+    <div class="section-inner">
+      <div class="music-header reveal">
+        <p class="section-label">Music</p>
+        <h2 class="section-title">Hear the <span class="accent-cyan">Mixes</span></h2>
+      </div>
+      <div class="embed-grid">
+
+        <div class="embed-card reveal">
+          <div class="embed-placeholder" style="--glow: rgba(255,45,120,0.2);">
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.6s; animation-delay:0s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.9s; animation-delay:0.1s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.5s; animation-delay:0.05s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.7s; animation-delay:0.2s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.4s; animation-delay:0.15s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.8s; animation-delay:0.3s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.55s; animation-delay:0.08s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.65s; animation-delay:0.25s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.75s; animation-delay:0.35s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.45s; animation-delay:0.12s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.85s; animation-delay:0.4s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#ff2d78; --bar-b:#ff80ab; --dur:0.5s; animation-delay:0.18s;"></div>
+          </div>
+          <div class="embed-info">
+            <h3>Late Night Vinyl Vol. 1</h3>
+            <p>Hip Hop &amp; Soul — 90 min deep dive into the crates</p>
+            <a class="embed-link" href="https://soundcloud.com" target="_blank">
+              Listen on SoundCloud ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="embed-card reveal">
+          <div class="embed-placeholder" style="--glow: rgba(123,47,255,0.25);">
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.7s; animation-delay:0.2s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.5s; animation-delay:0s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.9s; animation-delay:0.1s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.4s; animation-delay:0.3s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.6s; animation-delay:0.15s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.8s; animation-delay:0.05s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.45s; animation-delay:0.25s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.75s; animation-delay:0.35s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.55s; animation-delay:0.1s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.65s; animation-delay:0.4s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.85s; animation-delay:0.08s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#7b2fff; --bar-b:#b980ff; --dur:0.5s; animation-delay:0.22s;"></div>
+          </div>
+          <div class="embed-info">
+            <h3>Disco Inferno</h3>
+            <p>Disco, Funk &amp; Boogie — pure dance floor fuel</p>
+            <a class="embed-link" href="https://mixcloud.com" target="_blank">
+              Listen on Mixcloud ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="embed-card reveal">
+          <div class="embed-placeholder" style="--glow: rgba(0,229,255,0.2);">
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.9s; animation-delay:0.1s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.6s; animation-delay:0.3s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.5s; animation-delay:0s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.75s; animation-delay:0.2s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.4s; animation-delay:0.15s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.85s; animation-delay:0.05s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.55s; animation-delay:0.35s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.7s; animation-delay:0.12s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.45s; animation-delay:0.28s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.65s; animation-delay:0.42s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.8s; animation-delay:0.18s;"></div>
+            <div class="eq-bar" style="height:90px; --bar-a:#00e5ff; --bar-b:#80f0ff; --dur:0.5s; animation-delay:0.08s;"></div>
+          </div>
+          <div class="embed-info">
+            <h3>Jazz &amp; Cool Vibes</h3>
+            <p>Smooth jazz and rare groove for the after hours</p>
+            <a class="embed-link" href="https://soundcloud.com" target="_blank">
+              Listen on SoundCloud ↗
+            </a>
+          </div>
+        </div>
+
+      </div>
+      <div class="soundcloud-notice reveal">
+        <strong>🎵 Connect your profiles:</strong> Replace the placeholder cards above with
+        embedded SoundCloud or Mixcloud players — just drop in your profile URLs.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="section-inner">
+      <div class="reveal">
+        <p class="section-label">Gallery</p>
+        <h2 class="section-title">In the <span class="accent-yellow">Moment</span></h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="images/djmoddswing_profile_pic.jpg" alt="DJ Moodswing on the Pioneer decks" />
+          <div class="gallery-overlay">On the Pioneer Decks</div>
+        </div>
+        <div class="gallery-item">
+          <img src="images/photo_bw_turntable.jpg" alt="DJ Moodswing at the turntables B&W" />
+          <div class="gallery-overlay">In the Zone</div>
+        </div>
+        <div class="gallery-item">
+          <img src="images/photo_moodswing_setup.jpg" alt="MOODSWING DJ setup" style="object-position: center top;" />
+          <div class="gallery-overlay">The Setup</div>
+        </div>
+        <div class="gallery-item">
+          <img src="images/photo_moodswing_setup.jpg" alt="MOODSWING graffiti banner" style="object-position: center bottom;" />
+          <div class="gallery-overlay">The MOODSWING Banner</div>
+        </div>
+        <div class="gallery-item" style="--a: rgba(255,45,120,0.2); --b: rgba(123,47,255,0.25);">
+          🔊
+          <div class="gallery-overlay">More Photos Coming Soon</div>
+        </div>
+        <div class="gallery-item" style="--a: rgba(0,229,255,0.15); --b: rgba(123,47,255,0.2);">
+          🪩
+          <div class="gallery-overlay">More Photos Coming Soon</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- BOOKING -->
+  <section id="booking">
+    <div class="section-inner">
+      <div class="booking-grid">
+        <div class="booking-info reveal">
+          <p class="section-label">Bookings</p>
+          <h2 class="section-title">Let's Make<br><span class="accent-pink">Noise</span></h2>
+          <p>
+            Ready to bring the energy? DJ Moodswing is available for a wide range of events —
+            private, public, and everything in between. Fill out the form and we'll get back
+            to you within 24 hours.
+          </p>
+          <ul class="booking-types">
+            <li>Club Nights &amp; Venue Residencies</li>
+            <li>Private Parties &amp; House Parties</li>
+            <li>Weddings &amp; Receptions</li>
+            <li>Rooftop &amp; Outdoor Events</li>
+            <li>Corporate &amp; Brand Events</li>
+            <li>Pop-ups &amp; Record Store Events</li>
+          </ul>
+        </div>
+
+        <div class="reveal">
+          <div class="booking-form" id="bookingForm">
+            <div id="formContent">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="fname">First Name</label>
+                  <input type="text" id="fname" placeholder="Michael" />
+                </div>
+                <div class="form-group">
+                  <label for="lname">Last Name</label>
+                  <input type="text" id="lname" placeholder="Strain" />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" placeholder="you@email.com" />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone (optional)</label>
+                  <input type="tel" id="phone" placeholder="+1 (555) 000-0000" />
+                </div>
+                <div class="form-group">
+                  <label for="event-type">Event Type</label>
+                  <select id="event-type">
+                    <option value="">Select event type…</option>
+                    <option>Club Night</option>
+                    <option>Private Party</option>
+                    <option>Wedding / Reception</option>
+                    <option>Rooftop / Outdoor</option>
+                    <option>Corporate Event</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="event-date">Event Date</label>
+                  <input type="date" id="event-date" />
+                </div>
+                <div class="form-group form-full">
+                  <label for="venue">Venue / Location</label>
+                  <input type="text" id="venue" placeholder="Venue name and city" />
+                </div>
+                <div class="form-group form-full">
+                  <label for="message">Tell Me About Your Event</label>
+                  <textarea id="message" placeholder="Set length, vibe, genre preferences, expected crowd size…"></textarea>
+                </div>
+              </div>
+              <button class="btn btn-primary form-submit" onclick="submitForm()">
+                Send Booking Request ✉️
+              </button>
+              <p class="form-note">We'll reply within 24 hours. No spam, ever.</p>
+            </div>
+            <div class="form-success" id="formSuccess">
+              <div class="check">🎉</div>
+              <h3>Request received!</h3>
+              <p>Thanks for reaching out — DJ Moodswing will be in touch within 24 hours. Get ready to party.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">DJ MOODSWING</span>
+    <div class="social-row">
+      <!-- Instagram -->
+      <a class="social-btn" href="https://www.instagram.com/djmoodswing/" target="_blank" title="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <!-- Facebook -->
+      <a class="social-btn" href="https://www.facebook.com/mstrain2" target="_blank" title="Facebook">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+    <p>
+      Bookings: <a href="mailto:djmoodswing@email.com">djmoodswing@email.com</a>
+    </p>
+    <p style="margin-top:1rem; font-size:0.8rem; opacity:0.5;">
+      © 2026 DJ Moodswing · Michael Strain · All Rights Reserved
+    </p>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => io.observe(el));
+
+    // Stagger children in grids
+    document.querySelectorAll('.embed-grid .embed-card, .gallery-item').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.1}s`;
+    });
+
+    // Booking form mock submit
+    function submitForm() {
+      const fname = document.getElementById('fname').value;
+      const email = document.getElementById('email').value;
+      if (!fname || !email) {
+        alert('Please fill in at least your name and email.');
+        return;
+      }
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    }
+
+    // Smooth nav highlight
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      links.forEach(a => {
+        a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--cyan)' : '';
+      });
+    });
+  </script>
+
+</body>
+</html>
